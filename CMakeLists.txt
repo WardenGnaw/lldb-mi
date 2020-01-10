@@ -6,8 +6,17 @@ endif()
 
 project(lldb-mi)
 
+if (USE_LLDB_FRAMEWORK AND !APPLE)
+  message(FATAL_ERROR "USE_LLDB_FRAMEWORK is only avaliable on Darwin")
+endif()
 
-find_package(LLVM REQUIRED CONFIG)
+if (USE_LLDB_FRAMEWORK)
+  find_package(LLVM REQUIRED CONFIG PATHS ${CMAKE_PREFIX_PATH}/lib/cmake)
+else()
+  find_package(LLVM REQUIRED CONFIG)
+endif()
+
+
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 

@@ -76,7 +76,14 @@ add_executable(lldb-mi
 
 set(llvm_deps "")
 
-find_library(lib_lldb NAMES lldb liblldb HINTS ${LLVM_LIBRARY_DIRS})
+if (USE_LLDB_FRAMEWORK)
+  set_property(TARGET lldb-mi PROPERTY CXX_STANDARD 14)
+
+  find_library(lib_lldb NAMES LLDB PATHS ${LLVM_BINARY_DIR}/bin)
+else()
+  find_library(lib_lldb NAMES lldb liblldb HINTS ${LLVM_LIBRARY_DIRS})
+endif()
+
 find_library(lib_llvm LLVM HINTS ${LLVM_LIBRARY_DIRS})
 
 if (NOT lib_llvm)
